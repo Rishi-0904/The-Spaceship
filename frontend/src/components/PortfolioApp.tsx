@@ -14,6 +14,7 @@ import CommunicationsRoom from './rooms/CommunicationsRoom';
 import SystemCore from './rooms/SystemCore';
 import ProfessionalView from './professional/ProfessionalView';
 import FinaleSequence from './ui/FinaleSequence';
+import AIChatBubble from './chat/AIChatBubble';
 import styles from './PortfolioApp.module.css';
 
 interface Star {
@@ -92,6 +93,7 @@ export default function PortfolioApp() {
               {currentRoom === 'system-core' && <SystemCore />}
             </div>
           )}
+          <AIChatBubble />
         </>
       )}
     </div>
