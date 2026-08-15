@@ -2,7 +2,13 @@
 
 import os
 import logging
+from pathlib import Path
 import asyncpg
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +42,7 @@ async def create_tables():
         await conn.execute("""
             CREATE INDEX IF NOT EXISTS document_chunks_embedding_idx
             ON document_chunks
-            USING ivfflat (embedding vector_cosine_ops)
-            WITH (lists = 100);
+            USING hnsw (embedding vector_cosine_ops);
         """)
     logger.info("Database tables created/verified.")
 

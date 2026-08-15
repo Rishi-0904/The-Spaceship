@@ -13,11 +13,19 @@ import os
 import re
 import logging
 from pathlib import Path
+import json
 import asyncpg
 import google.generativeai as genai
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
 logger = logging.getLogger(__name__)
+
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 # ─── Config ─────────────────────────────────────────────────────────────────
 
@@ -27,7 +35,7 @@ DOCS_DIR = Path(__file__).parent.parent / "app" / "data" / "portfolio_docs"
 
 CHUNK_SIZE = 400       # words per chunk
 CHUNK_OVERLAP = 50     # words overlap between chunks
-EMBEDDING_MODEL = "models/text-embedding-004"
+EMBEDDING_MODEL = "models/gemini-embedding-001"
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
@@ -86,6 +94,7 @@ async def embed_chunk(text: str) -> list[float]:
             model=EMBEDDING_MODEL,
             content=text,
             task_type="retrieval_document",
+            output_dimensionality=768,
         )
         return result["embedding"]
     except Exception as e:
@@ -98,6 +107,7 @@ async def embed_chunk(text: str) -> list[float]:
 async def setup_db(conn: asyncpg.Connection):
     """Ensure pgvector extension and table exist."""
     await conn.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+    await conn.execute("DROP TABLE IF EXISTS document_chunks CASCADE;")
     await conn.execute("""
         CREATE TABLE IF NOT EXISTS document_chunks (
             id SERIAL PRIMARY KEY,
@@ -111,8 +121,7 @@ async def setup_db(conn: asyncpg.Connection):
     await conn.execute("""
         CREATE INDEX IF NOT EXISTS document_chunks_embedding_idx
         ON document_chunks
-        USING ivfflat (embedding vector_cosine_ops)
-        WITH (lists = 100);
+        USING hnsw (embedding vector_cosine_ops);
     """)
     logger.info("Database tables ready.")
 
@@ -136,7 +145,7 @@ async def insert_chunk(conn: asyncpg.Connection, title: str, chunk: str, embeddi
         title,
         chunk,
         embedding_str,
-        str(metadata).replace("'", '"'),
+        json.dumps(metadata),
     )
 
 
@@ -174,11 +183,11 @@ async def main():
                 }
                 await insert_chunk(conn, doc["title"], chunk, embedding, metadata)
                 total_chunks += 1
-                print(f"   [{i+1}/{len(chunks)}] ✓ Embedded chunk", end="\r")
+                print(f"   [{i+1}/{len(chunks)}] Embedded chunk", end="\r")
 
-            print(f"   ✅ Done: {len(chunks)} chunks stored")
+            print(f"   Done: {len(chunks)} chunks stored")
 
-        logger.info(f"\n🎉 Ingestion complete! {total_chunks} total chunks stored in pgvector.")
+        logger.info(f"\nIngestion complete! {total_chunks} total chunks stored in pgvector.")
 
     finally:
         await conn.close()

@@ -2,12 +2,18 @@
 
 import os
 import logging
+from pathlib import Path
 import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 logger = logging.getLogger(__name__)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-EMBEDDING_MODEL = "models/text-embedding-004"
+EMBEDDING_MODEL = "models/gemini-embedding-001"
 EMBEDDING_DIMENSION = 768
 
 if GEMINI_API_KEY:
@@ -18,7 +24,7 @@ else:
 
 async def embed_text(text: str) -> list[float]:
     """
-    Generate an embedding for a single text using Gemini text-embedding-004.
+    Generate an embedding for a single text using Gemini gemini-embedding-001.
     Returns a list of 768 floats.
     """
     try:
@@ -26,6 +32,7 @@ async def embed_text(text: str) -> list[float]:
             model=EMBEDDING_MODEL,
             content=text,
             task_type="retrieval_query",
+            output_dimensionality=EMBEDDING_DIMENSION,
         )
         return result["embedding"]
     except Exception as e:
@@ -42,6 +49,7 @@ async def embed_document(text: str) -> list[float]:
             model=EMBEDDING_MODEL,
             content=text,
             task_type="retrieval_document",
+            output_dimensionality=EMBEDDING_DIMENSION,
         )
         return result["embedding"]
     except Exception as e:

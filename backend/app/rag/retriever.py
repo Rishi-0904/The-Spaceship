@@ -43,11 +43,21 @@ async def retrieve_relevant_chunks(query: str, top_k: int = TOP_K) -> list[dict]
     for row in rows:
         similarity = row["similarity"]
         if similarity >= SIMILARITY_THRESHOLD:
+            meta = row["metadata"]
+            if isinstance(meta, str):
+                import json
+                try:
+                    meta = json.loads(meta)
+                except Exception:
+                    meta = {}
+            elif not isinstance(meta, dict):
+                meta = {}
+
             results.append(
                 {
                     "doc_title": row["doc_title"],
                     "chunk_text": row["chunk_text"],
-                    "metadata": dict(row["metadata"]) if row["metadata"] else {},
+                    "metadata": meta,
                     "similarity": round(float(similarity), 4),
                 }
             )

@@ -1,7 +1,13 @@
 """Helper script to create database 'portfolio' if it does not exist."""
 import asyncio
 import os
+from pathlib import Path
 import asyncpg
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/portfolio")
 

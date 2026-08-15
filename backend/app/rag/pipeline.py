@@ -2,14 +2,21 @@
 
 import os
 import logging
+from pathlib import Path
 import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+env_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
 from app.rag.retriever import retrieve_relevant_chunks
 from app.models.schemas import ChatMessage
 
 logger = logging.getLogger(__name__)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-LLM_MODEL = "gemini-1.5-flash"
+LLM_MODEL = "gemini-2.5-flash"
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
