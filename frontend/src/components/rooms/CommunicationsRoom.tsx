@@ -4,10 +4,16 @@ import { useState, useRef, useEffect } from 'react';
 import RoomShell from './RoomShell';
 import styles from './CommunicationsRoom.module.css';
 
+interface Source {
+  title: string;
+  chunk_preview: string;
+}
+
 interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  sources?: Source[];
 }
 
 const EXAMPLE_QUESTIONS = [
@@ -140,17 +146,42 @@ export default function CommunicationsRoom() {
     setInput('');
     setIsStreaming(true);
 
-    const responseText = getResponse(text);
     msgIdCounter.current++;
     const aiMsgId = `msg-${msgIdCounter.current}`;
-
     setMessages((prev) => [...prev, { id: aiMsgId, role: 'assistant', content: '' }]);
+
+    let responseText = '';
+    let sources: Source[] = [];
+
+    try {
+      const historyPayload = messages.slice(1).map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          history: historyPayload,
+        }),
+      });
+
+      if (!res.ok) throw new Error('API Request Failed');
+      const data = await res.json();
+      responseText = data.answer;
+      sources = data.sources || [];
+    } catch (e) {
+      console.warn('Backend API connection failed, falling back to local simulation:', e);
+      responseText = getResponse(text);
+    }
 
     let accumulated = '';
     await simulateStream(responseText, (chunk) => {
       accumulated += chunk;
       setMessages((prev) =>
-        prev.map((m) => (m.id === aiMsgId ? { ...m, content: accumulated } : m))
+        prev.map((m) => (m.id === aiMsgId ? { ...m, content: accumulated, sources } : m))
       );
     });
 
@@ -227,6 +258,18 @@ export default function CommunicationsRoom() {
                     {formatMessage(msg.content)}
                     {isStreaming && msg.id === messages[messages.length - 1].id && msg.role === 'assistant' && (
                       <span className={styles.cursor}>▋</span>
+                    )}
+                    {msg.sources && msg.sources.length > 0 && (
+                      <div className={styles.sourcesContainer}>
+                        <div className={styles.sourcesHeader}>Sources:</div>
+                        <div className={styles.sourcesList}>
+                          {msg.sources.map((src, idx) => (
+                            <div key={idx} className={styles.sourceItem} title={src.chunk_preview}>
+                              📖 {src.title}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>

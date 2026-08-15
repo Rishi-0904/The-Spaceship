@@ -236,3 +236,42 @@
   .infoPanel { display: none; }
   .chatWindow { height: 500px; }
 }
+
+.sourcesContainer {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sourcesHeader {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.05em;
+}
+
+.sourcesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.sourceItem {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--cyan-dim);
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  cursor: help;
+  transition: var(--transition);
+}
+
+.sourceItem:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-pulse);
+}
