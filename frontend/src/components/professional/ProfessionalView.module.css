@@ -292,3 +292,52 @@
   .skillGrid { grid-template-columns: 1fr; }
   .projectGrid { grid-template-columns: 1fr; }
 }
+
+.proEduList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.proEduItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.proEduBullet {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.proEduDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.proEduInst {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.proEduTimeline {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.projectBullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-left: 1rem;
+  list-style-type: disc;
+  margin: 0.25rem 0;
+}
+
+.projectBullet {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}

@@ -63,8 +63,16 @@ export default function ProfessionalView() {
               <div className={styles.aboutInfo}>
                 <h1 className={styles.proName}>{PORTFOLIO_DATA.name}</h1>
                 <p className={styles.proTitle}>{PORTFOLIO_DATA.title}</p>
-                <div className={styles.proEdu}>
-                  🎓 {PORTFOLIO_DATA.education.degree} — <strong>{PORTFOLIO_DATA.education.institution}</strong> ({PORTFOLIO_DATA.education.years})
+                <div className={styles.proEduList}>
+                  {PORTFOLIO_DATA.education.history.map((eduItem, idx) => (
+                    <div key={idx} className={styles.proEduItem}>
+                      <span className={styles.proEduBullet}>🎓</span>
+                      <div className={styles.proEduDetails}>
+                        <span className={styles.proEduInst}><strong>{eduItem.institution}</strong></span>
+                        <span className={styles.proEduTimeline}>{eduItem.degree} ({eduItem.timeline}) — <em>{eduItem.performance}</em></span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 <p className={styles.proBio}>
                   Building intelligent systems at the intersection of AI and engineering.
@@ -92,7 +100,12 @@ export default function ProfessionalView() {
             <h2 className={`section-title ${styles.sectionTitle}`}>Technical Skills</h2>
             {Object.entries(PORTFOLIO_DATA.skills).map(([cat, skills]) => (
               <div key={cat} className={styles.skillCat}>
-                <h3 className={styles.skillCatTitle}>{cat.replace('ai', 'AI / ML').replace('cp', 'Competitive Programming').replace('backend', 'Backend / DevOps').replace('frontend', 'Frontend')}</h3>
+                <h3 className={styles.skillCatTitle}>
+                  {cat === 'languages' ? 'Programming Languages' :
+                   cat === 'frameworks' ? 'Frameworks & Libraries' :
+                   cat === 'databases' ? 'Databases' :
+                   cat === 'tools' ? 'Tools & Protocols' : cat}
+                </h3>
                 <div className={styles.skillGrid}>
                   {skills.map((skill) => (
                     <div key={skill.name} className={`${styles.skillRow} glass-panel`}>
@@ -121,8 +134,12 @@ export default function ProfessionalView() {
                     {p.status === 'active' ? 'In Progress' : 'Completed'}
                   </div>
                   <h3 className={styles.projectName}>{p.name}</h3>
-                  <p className={styles.projectTagline}>{p.tagline}</p>
-                  <p className={styles.projectDesc}>{p.description}</p>
+                  <p className={styles.projectTagline}>{p.tagline} ({p.timeline})</p>
+                  <ul className={styles.projectBullets}>
+                    {p.bullets.map((bullet, idx) => (
+                      <li key={idx} className={styles.projectBullet}>{bullet}</li>
+                    ))}
+                  </ul>
                   <div className={styles.projectTech}>
                     {p.tech.slice(0, 7).map((t) => <span key={t} className="chip">{t}</span>)}
                   </div>

@@ -100,9 +100,13 @@ export default function EngineeringRoom() {
         {/* Skills */}
         <div className={`${styles.skills} ${repaired ? styles.skillsVisible : ''}`}>
           <div className={styles.skillSection}>
-            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--teal)' }}>BACKEND & INFRASTRUCTURE</h3>
+            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--teal)' }}>BACKEND & DEVOPS</h3>
             <div className={styles.chipCloud}>
-              {PORTFOLIO_DATA.skills.backend.map((skill) => (
+              {[
+                ...PORTFOLIO_DATA.skills.frameworks.filter(f => ['FastAPI', 'Express.js', 'Socket.io', 'LangGraph', 'LangChain', 'FAISS'].includes(f.name)),
+                ...PORTFOLIO_DATA.skills.databases,
+                ...PORTFOLIO_DATA.skills.tools.filter(t => ['Docker', 'RabbitMQ', 'Redis', 'MCP', 'JWT'].includes(t.name))
+              ].map((skill) => (
                 <div key={skill.name} className={`${styles.skillChip} glass-panel`}>
                   <span className={styles.chipName}>{skill.name}</span>
                   <div className={styles.chipBar}>
@@ -114,9 +118,9 @@ export default function EngineeringRoom() {
           </div>
 
           <div className={styles.skillSection}>
-            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--cyan)' }}>FRONTEND</h3>
+            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--cyan)' }}>FRONTEND frameworks</h3>
             <div className={styles.chipCloud}>
-              {PORTFOLIO_DATA.skills.frontend.map((skill) => (
+              {PORTFOLIO_DATA.skills.frameworks.filter(f => ['React.js', 'Next.js'].includes(f.name)).map((skill) => (
                 <div key={skill.name} className={`${styles.skillChip} glass-panel`}>
                   <span className={styles.chipName}>{skill.name}</span>
                   <div className={styles.chipBar}>
@@ -128,9 +132,9 @@ export default function EngineeringRoom() {
           </div>
 
           <div className={styles.skillSection}>
-            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--amber)' }}>COMPETITIVE PROGRAMMING</h3>
+            <h3 className={styles.skillSectionTitle} style={{ color: 'var(--amber)' }}>PROGRAMMING LANGUAGES & CP</h3>
             <div className={styles.chipCloud}>
-              {PORTFOLIO_DATA.skills.cp.map((skill) => (
+              {PORTFOLIO_DATA.skills.languages.map((skill) => (
                 <div key={skill.name} className={`${styles.skillChip} glass-panel`}>
                   <span className={styles.chipName}>{skill.name}</span>
                   <div className={styles.chipBar}>

@@ -86,7 +86,16 @@ export default function AILabRoom() {
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  const skills = PORTFOLIO_DATA.skills.ai;
+  const skills = [
+    { name: 'LangGraph', level: 92 },
+    { name: 'LangChain', level: 90 },
+    { name: 'RAG Pipeline', level: 90 },
+    { name: 'Agentic AI', level: 92 },
+    { name: 'Fine-Tuning (LoRA/GRPO)', level: 80 },
+    { name: 'Computer Vision', level: 85 },
+    { name: 'FAISS / Vector DBs', level: 85 },
+    { name: 'TensorFlow', level: 82 },
+  ];
 
   return (
     <RoomShell

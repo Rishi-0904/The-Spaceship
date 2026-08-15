@@ -126,14 +126,8 @@ export default function CommandRoom() {
           <div className={styles.info}>
             <h2 className={styles.name}>{name}</h2>
             <p className={styles.profileTitle}>{title}</p>
-            <div className={styles.edu}>
-              <span>🎓</span>
-              <span>{education.degree}</span>
-              <span className={styles.eduSep}>•</span>
-              <strong>{education.institution}</strong>
-              <span className={styles.euduYear}>{education.years}</span>
-            </div>
-
+            <div className={styles.registration}>REGISTRATION NO: {PORTFOLIO_DATA.registrationNo}</div>
+            
             {/* Areas */}
             <div className={styles.areas}>
               {areas.map((area) => (
@@ -145,8 +139,30 @@ export default function CommandRoom() {
             <p className={styles.bio}>
               Building intelligent systems at the intersection of AI and engineering. Specializing in
               multi-agent architectures, retrieval-augmented generation, and production-grade full-stack systems.
-              Open to research and engineering opportunities in AI/ML.
+              Passionate about Generative AI, Agentic AI, and LLM engineering.
             </p>
+
+            {/* Academic History Timeline */}
+            <div className={styles.eduHistory}>
+              <div className={styles.eduHistoryTitle}>ACADEMIC TIMELINE</div>
+              <div className={styles.eduTimeline}>
+                {education.history.map((eduItem, idx) => (
+                  <div key={idx} className={styles.eduTimelineItem}>
+                    <div className={styles.eduTimelineDot} />
+                    <div className={styles.eduTimelineContent}>
+                      <div className={styles.eduTimelineHeader}>
+                        <span className={styles.eduTimelineInst}>{eduItem.institution}</span>
+                        <span className={styles.eduTimelineYear}>{eduItem.timeline}</span>
+                      </div>
+                      <div className={styles.eduTimelineSub}>
+                        <span>{eduItem.degree}</span>
+                        <span className={styles.eduTimelinePerf}>{eduItem.performance}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Links */}
             <div className={styles.linksRow}>
