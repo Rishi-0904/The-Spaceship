@@ -1,0 +1,32 @@
+.app {
+  position: relative;
+  min-height: 100vh;
+  background: var(--void);
+  overflow-x: hidden;
+}
+
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--op, 0.5); transform: scale(1); }
+  50% { opacity: 0.1; transform: scale(0.5); }
+}
+
+.experience {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding-top: 70px; /* TopNav height */
+}

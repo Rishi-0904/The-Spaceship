@@ -1,0 +1,189 @@
+.shipMap {
+  padding: 2rem 0 4rem;
+  min-height: calc(100vh - 70px);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title { margin-bottom: 0.75rem; }
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Ship schematic */
+.schematic {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 0.95;
+  background: rgba(8, 16, 40, 0.4);
+  border: 1px solid rgba(0, 212, 255, 0.08);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* Grid background */
+.schematic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 30px 30px;
+  border-radius: inherit;
+}
+
+/* Corridor SVG */
+.corridors {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.corridorSvg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Room button */
+.room {
+  position: absolute;
+  background: rgba(8, 16, 40, 0.7);
+  border: 1px solid rgba(var(--room-color, 0,212,255), 0.2);
+  border-color: color-mix(in srgb, var(--room-color) 25%, transparent);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 1rem 0.75rem;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  text-align: center;
+}
+
+.room:hover {
+  border-color: var(--room-color);
+  background: rgba(8, 16, 40, 0.85);
+  transform: scale(1.03);
+  z-index: 2;
+  box-shadow: 0 0 25px color-mix(in srgb, var(--room-color) 30%, transparent);
+}
+
+.room.explored {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.roomIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: block;
+}
+
+.roomLabel {
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.roomSub {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.exploredBadge {
+  font-size: 0.5rem;
+  font-family: var(--font-mono);
+  color: var(--green);
+  letter-spacing: 0.08em;
+  margin-top: 0.15rem;
+}
+
+.roomGlow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.room:hover .roomGlow { opacity: 1; }
+
+/* Ship label */
+.designation {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: rgba(0,212,255,0.2);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendKey {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 3px;
+  font-size: 0.6rem;
+  color: var(--cyan);
+}
+
+@media (max-width: 768px) {
+  .schematic {
+    aspect-ratio: auto;
+    min-height: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .corridors { display: none; }
+  .designation { display: none; }
+
+  .room {
+    position: static !important;
+    width: 100% !important;
+    min-height: 90px !important;
+    margin: 0;
+    border-radius: 10px;
+  }
+}
