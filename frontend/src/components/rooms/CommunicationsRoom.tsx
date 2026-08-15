@@ -125,6 +125,7 @@ export default function CommunicationsRoom() {
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const msgIdCounter = useRef(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -133,13 +134,15 @@ export default function CommunicationsRoom() {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isStreaming) return;
 
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: text };
+    msgIdCounter.current++;
+    const userMsg: Message = { id: `msg-${msgIdCounter.current}`, role: 'user', content: text };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setIsStreaming(true);
 
     const responseText = getResponse(text);
-    const aiMsgId = (Date.now() + 1).toString();
+    msgIdCounter.current++;
+    const aiMsgId = `msg-${msgIdCounter.current}`;
 
     setMessages((prev) => [...prev, { id: aiMsgId, role: 'assistant', content: '' }]);
 

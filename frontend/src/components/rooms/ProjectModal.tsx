@@ -22,9 +22,9 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
 
   // Determine architecture nodes
   const archNodes: readonly ArchNode[] = 'architecture' in project
-    ? (project as any).architecture.nodes
+    ? (project as unknown as { architecture: { nodes: readonly ArchNode[] } }).architecture.nodes
     : 'pipeline' in project
-    ? (project as any).pipeline
+    ? (project as unknown as { pipeline: readonly ArchNode[] }).pipeline
     : [];
 
   return (

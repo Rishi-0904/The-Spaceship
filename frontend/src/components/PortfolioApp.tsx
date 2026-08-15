@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePortfolioStore } from '@/store/portfolio';
 import LandingScreen from './landing/LandingScreen';
 import ShipMap from './ship/ShipMap';
@@ -16,8 +16,35 @@ import ProfessionalView from './professional/ProfessionalView';
 import FinaleSequence from './ui/FinaleSequence';
 import styles from './PortfolioApp.module.css';
 
+interface Star {
+  id: number;
+  left: string;
+  top: string;
+  delay: string;
+  duration: string;
+  width: string;
+  height: string;
+  opacity: number;
+}
+
 export default function PortfolioApp() {
   const { currentRoom, viewMode, finaleTriggered } = usePortfolioStore();
+  const [stars, setStars] = useState<Star[]>([]);
+
+  useEffect(() => {
+    setStars(
+      Array.from({ length: 80 }).map((_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 4}s`,
+        duration: `${2 + Math.random() * 4}s`,
+        width: `${1 + Math.random() * 2}px`,
+        height: `${1 + Math.random() * 2}px`,
+        opacity: 0.3 + Math.random() * 0.7,
+      }))
+    );
+  }, []);
 
   // Prevent body scroll when needed
   useEffect(() => {
@@ -31,15 +58,15 @@ export default function PortfolioApp() {
     <div className={styles.app}>
       {/* Background always rendered */}
       <div className={styles.stars} aria-hidden="true">
-        {Array.from({ length: 80 }).map((_, i) => (
-          <span key={i} className={styles.star} style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 4}s`,
-            animationDuration: `${2 + Math.random() * 4}s`,
-            width: `${1 + Math.random() * 2}px`,
-            height: `${1 + Math.random() * 2}px`,
-            opacity: 0.3 + Math.random() * 0.7,
+        {stars.map((star: any) => (
+          <span key={star.id} className={styles.star} style={{
+            left: star.left,
+            top: star.top,
+            animationDelay: star.delay,
+            animationDuration: star.duration,
+            width: star.width,
+            height: star.height,
+            opacity: star.opacity,
           }} />
         ))}
       </div>

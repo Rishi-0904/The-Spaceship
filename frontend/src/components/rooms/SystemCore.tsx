@@ -128,7 +128,7 @@ export default function SystemCore() {
               CLASSIFIED SEQUENCE
             </div>
             <p className={styles.finaleDesc}>
-              You've explored the ship. There's one final sequence remaining…
+              {"You've explored the ship. There's one final sequence remaining…"}
             </p>
             <button
               id="btn-trigger-finale"

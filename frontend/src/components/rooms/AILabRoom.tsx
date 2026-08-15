@@ -19,7 +19,6 @@ export default function AILabRoom() {
   const [connectedNodes, setConnectedNodes] = useState<string[]>([]);
   const [stabilized, setStabilized] = useState(false);
   const [activeNode, setActiveNode] = useState<string | null>(null);
-  const [pulseLines, setPulseLines] = useState<string[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleNodeClick = (nodeId: string) => {
@@ -28,7 +27,6 @@ export default function AILabRoom() {
       const updated = [...connectedNodes, nodeId];
       setConnectedNodes(updated);
       setActiveNode(nodeId);
-      setPulseLines((prev) => [...prev, nodeId]);
 
       if (updated.length === REQUIRED_ORDER.length) {
         setTimeout(() => setStabilized(true), 600);
