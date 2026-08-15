@@ -1,0 +1,188 @@
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.taskPanel {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.taskHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.taskIcon { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
+
+.taskTitle {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.taskDesc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+/* Pipeline */
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.pipeRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pipe {
+  width: 2px;
+  height: 20px;
+  background: rgba(20, 184, 166, 0.15);
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.pipeActive {
+  background: rgba(20, 184, 166, 0.4);
+}
+
+.pipeFlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, var(--teal), transparent);
+  animation: flow-down 1.5s linear infinite;
+}
+
+@keyframes flow-down {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.segment {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid rgba(20,184,166,0.15);
+  border-radius: 8px;
+  background: rgba(8,20,40,0.6);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.segment:hover {
+  border-color: rgba(20,184,166,0.4);
+  background: rgba(20,184,166,0.05);
+}
+
+.segmentConnected {
+  border-color: var(--teal);
+  background: rgba(20,184,166,0.08);
+}
+
+.segmentActive { box-shadow: 0 0 15px rgba(20,184,166,0.2); }
+
+.segIcon { font-size: 1.1rem; color: var(--teal); flex-shrink: 0; }
+
+.segInfo { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; }
+
+.segLabel {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.segDesc { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+.segCheck { color: var(--teal); font-size: 0.6rem; }
+
+.repairedMsg {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 0.75rem;
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 6px;
+  background: rgba(16,185,129,0.05);
+  animation: pulse-opacity 2s infinite;
+}
+
+@keyframes pulse-opacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+/* Skills */
+.skills {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+
+.skillsVisible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.skillSection { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.skillSectionTitle {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.chipCloud {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.6rem;
+}
+
+.skillChip {
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.chipName {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.chipBar {
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.chipFill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .skills { opacity: 1; transform: none; pointer-events: auto; }
+}
